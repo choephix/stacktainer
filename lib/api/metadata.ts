@@ -31,3 +31,33 @@ export async function saveMetadata(metadata: { stacks: Record<string, StackMetad
   await fs.mkdir(path.dirname(metaDataPath), { recursive: true });
   await fs.writeFile(metaDataPath, YAML.stringify(metadata), 'utf8');
 }
+
+export async function updateStackMetadata(
+  fileName: string,
+  containers: Array<{
+    serviceKey: string;
+    containerName: string;
+    containerId: string;
+    status: string;
+  }> | null
+) {
+  const metadata = await getMetadata();
+
+  if (containers === null) {
+    // Stack is being removed
+    delete metadata.stacks[fileName];
+  } else {
+    // Update or add stack metadata
+    metadata.stacks[fileName] = {
+      stackFile: fileName,
+      containers,
+      lastUpdated: new Date().toISOString(),
+    };
+  }
+
+  await saveMetadata(metadata);
+}
+
+export async function removeStackMetadata(fileName: string) {
+  await updateStackMetadata(fileName, null);
+}
