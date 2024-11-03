@@ -3,10 +3,10 @@ import * as YAML from 'yaml';
 
 export async function GET(
   request: Request,
-  { params }: { params: { stack: string } }
+  { params }: { params: Promise<{ stack: string }> }
 ) {
   try {
-    const fileName = params.stack;
+    const fileName = (await params).stack;
     const fileData = await readComposeFile(fileName);
     
     if (!fileData?.content) {
