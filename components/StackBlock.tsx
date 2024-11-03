@@ -8,18 +8,22 @@ type StackBlockProps = {
 };
 
 export function StackBlock({ stack, isSelected, onClick }: StackBlockProps) {
-  const stackName = stack.fileName.replace(/\.ya?ml$/, '');
-  
+  const stackName = stack.fileName //
+    .replace(/\.ya?ml$/, '')
+    .replace(/^docker-compose\./, '');
+
   return (
-    <div 
+    <div
       onClick={onClick}
       className={`
-        cursor-pointer rounded-lg p-2 
+        cursor-pointer rounded p-1 
         ${isSelected ? 'bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-50 dark:hover:bg-gray-900'}
       `}
     >
-      <h3 className="font-medium mb-2">{stackName}</h3>
-      <div className="space-y-1">
+      <h3 className='font-bold text-xs mb-1' style={{ fontVariant: 'small-caps' }}>
+        {stackName}
+      </h3>
+      <div className='space-y-0.5'>
         {stack.containers.map(container => (
           <ContainerLine
             key={container.serviceName}
@@ -30,4 +34,4 @@ export function StackBlock({ stack, isSelected, onClick }: StackBlockProps) {
       </div>
     </div>
   );
-} 
+}

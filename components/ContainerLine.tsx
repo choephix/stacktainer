@@ -7,7 +7,7 @@ type ContainerLineProps = {
 
 export function ContainerLine({ name, status }: ContainerLineProps) {
   return (
-    <div className="flex items-center gap-2 px-2 py-1 text-sm">
+    <div className="flex items-center gap-1.5 px-1.5 py-0.5 text-xs">
       <StatusDot status={status} />
       <span className="truncate">{name}</span>
     </div>

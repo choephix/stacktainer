@@ -22,9 +22,9 @@ export default function Home() {
   return (
     <div className='flex h-screen'>
       {/* Sidebar */}
-      <div className='w-80 border-r border-gray-200 dark:border-gray-800 p-4 overflow-y-auto'>
+      <div className='w-64 border-r border-gray-200 dark:border-gray-800 p-2 overflow-y-auto'>
         {/* Stacks */}
-        <div className='space-y-2'>
+        <div className='space-y-1'>
           {data.stacks.map(stack => (
             <StackBlock
               key={stack.fileName}
@@ -40,16 +40,16 @@ export default function Home() {
 
         {/* Separator */}
         {data.stacklessContainers.length > 0 && (
-          <div className='my-4 border-t border-gray-200 dark:border-gray-800' />
+          <div className='my-2 border-t border-gray-200 dark:border-gray-800' />
         )}
 
         {/* Stackless Containers */}
         {data.stacklessContainers.length > 0 && (
           <div>
-            <h3 className='text-sm font-medium text-gray-500 dark:text-gray-400 mb-2'>
+            <h3 className='text-xs font-medium text-gray-500 dark:text-gray-400 mb-1'>
               Standalone Containers
             </h3>
-            <div className='space-y-1'>
+            <div className='space-y-0.5'>
               {data.stacklessContainers.map(container => (
                 <ContainerLine key={container.id} name={container.name} status={container.status} />
               ))}
@@ -59,8 +59,8 @@ export default function Home() {
       </div>
 
       {/* Main Content */}
-      <div className='flex-1 p-8'>
-        <div className='text-center text-gray-500 dark:text-gray-400'>
+      <div className='flex-1 p-4'>
+        <div className='text-center text-xs text-gray-500 dark:text-gray-400'>
           Select a stack to view details
         </div>
       </div>

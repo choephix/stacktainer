@@ -3,7 +3,7 @@ type StatusDotProps = {
 };
 
 export function StatusDot({ status }: StatusDotProps) {
-  let className = "w-2 h-2 rounded-full ";
+  let className = "w-1.5 h-1.5 rounded-full ";
   
   if (!status) {
     className += "border border-gray-400 dark:border-gray-600";
