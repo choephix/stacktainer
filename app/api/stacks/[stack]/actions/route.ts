@@ -1,18 +1,22 @@
-import { 
-  upStack, 
-  downStack, 
-  restartStack, 
-  stopStack, 
-  getStackLogs 
+import {
+  upStack,
+  downStack,
+  restartStack,
+  stopStack,
+  getStackLogs,
 } from '@/lib/api/docker-compose';
 
-export async function POST(
-  request: Request,
-  { params }: { params: { stack: string } }
-) {
+export async function POST(request: Request, { params }: { params: Promise<{ stack: string }> }) {
+  console.clear();
+  console.log(`
+    ------------------------------
+    ${JSON.stringify(request, null, 2)}
+    ------------------------------
+  `);
+
   try {
     const { action } = await request.json();
-    const fileName = params.stack;
+    const fileName = (await params).stack;
 
     let result;
     switch (action) {
@@ -38,9 +42,6 @@ export async function POST(
     return Response.json(result);
   } catch (error) {
     console.error('Error executing stack action:', error);
-    return Response.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
-} 
+}
