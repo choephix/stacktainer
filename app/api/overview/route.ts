@@ -32,6 +32,8 @@ interface OverviewResponse {
 }
 
 export async function GET() {
+  console.clear();
+  
   try {
     const dockerRunning = await isDockerRunning();
     
@@ -48,6 +50,9 @@ export async function GET() {
       getStacksInfo(),
       getContainers(),
     ]);
+
+    console.log('stacks', stacks);
+    console.log('containers', containers);
 
     // Read YAML content for existing files
     const stacksPath = process.env.STACKS_PATH;

@@ -9,8 +9,10 @@ export async function getStacksInfo() {
     getMetadata(),
   ]);
 
+  console.log('stacksMetaData', stacksMetaData);
+
   // Process each yaml file
-  const stackPromises = yamlFiles.map(async (fileName): Promise<StackInfo> => {
+  const stackFilePromises = yamlFiles.map(async (fileName): Promise<StackInfo> => {
     const fileData = await readComposeFile(fileName);
 
     return {
@@ -35,7 +37,7 @@ export async function getStacksInfo() {
       })
     );
 
-  const stacks = [...(await Promise.all(stackPromises)), ...missingFiles];
+  const stacks = [...(await Promise.all(stackFilePromises)), ...missingFiles];
 
   return stacks as StackInfo[];
 }
