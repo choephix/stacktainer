@@ -4,11 +4,11 @@ import type { EnhancedStackInfo } from '@/types/api';
 type StackBlockProps = {
   stack: EnhancedStackInfo;
   isSelected: boolean;
-  onClick: () => void;
+  onClick: (event: React.MouseEvent) => void;
 };
 
 export function StackBlock({ stack, isSelected, onClick }: StackBlockProps) {
-  const stackName = stack.fileName //
+  const stackName = stack.fileName
     .replace(/\.ya?ml$/, '')
     .replace(/^docker-compose\./, '');
 

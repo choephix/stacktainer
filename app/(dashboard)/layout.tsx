@@ -1,13 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { StackBlock } from '@/components/StackBlock';
 import { ContainerLine } from '@/components/ContainerLine';
 import type { OverviewResponse } from '@/types/api';
 
-export default function Home() {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<OverviewResponse | null>(null);
-  const [selectedStack, setSelectedStack] = useState<string | null>(null);
+  const pathname = usePathname();
+  const router = useRouter();
+  
+  const selectedStack = pathname.startsWith('/stacks/') 
+    ? pathname.replace('/stacks/', '')
+    : null;
 
   useEffect(() => {
     fetch('/api/overview')
@@ -25,17 +31,23 @@ export default function Home() {
       <div className='w-64 border-r border-gray-200 dark:border-gray-800 p-2 overflow-y-auto'>
         {/* Stacks */}
         <div className='space-y-1'>
-          {data.stacks.map(stack => (
-            <StackBlock
-              key={stack.fileName}
-              stack={stack}
-              isSelected={selectedStack === stack.fileName}
-              onClick={() => {
-                setSelectedStack(stack.fileName);
-                console.log('Selected stack:', stack);
-              }}
-            />
-          ))}
+          {data.stacks.map(stack => {
+            const stackName = stack.fileName
+              .replace(/\.ya?ml$/, '')
+              .replace(/^docker-compose\./, '');
+              
+            return (
+              <StackBlock
+                key={stack.fileName}
+                stack={stack}
+                isSelected={selectedStack === stackName}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push(`/stacks/${stack.fileName}`);
+                }}
+              />
+            );
+          })}
         </div>
 
         {/* Separator */}
@@ -59,10 +71,8 @@ export default function Home() {
       </div>
 
       {/* Main Content */}
-      <div className='flex-1 p-4'>
-        <div className='text-center text-xs text-gray-500 dark:text-gray-400'>
-          Select a stack to view details
-        </div>
+      <div className='flex-1 overflow-auto'>
+        {children}
       </div>
     </div>
   );
