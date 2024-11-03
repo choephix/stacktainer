@@ -21,6 +21,9 @@ async function isComposeFile(data: unknown): Promise<boolean> {
 export async function GET() {
   try {
     const stacksPath = process.env.STACKS_PATH
+
+    console.log('stacksPath', stacksPath)
+
     if (!stacksPath) {
       return Response.json({ 
         error: 'STACKS_PATH not configured',
