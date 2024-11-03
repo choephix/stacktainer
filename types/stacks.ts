@@ -39,3 +39,10 @@ export interface StacksResponse {
   stacks: StackInfo[]
   error?: string
 } 
+
+// export interface EnhancedStackInfo extends StackInfo {
+//   containers: {
+//     serviceName: string;
+//     containerProps: ContainerMetadata | null;
+//   }[];
+// }
