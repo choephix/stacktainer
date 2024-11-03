@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
-import { parse, stringify } from 'yaml';
+import * as YAML from 'yaml';
 import type { StackMetadata } from '@/types/stacks';
 
 export async function getMetadata(): Promise<{ stacks: Record<string, StackMetadata> }> {
@@ -12,7 +12,7 @@ export async function getMetadata(): Promise<{ stacks: Record<string, StackMetad
   const metaDataPath = path.join(stacksPath, '.stacktainer', 'meta.yaml');
   try {
     const content = await fs.readFile(metaDataPath, 'utf8');
-    const metadata = parse(content);
+    const metadata = YAML.parse(content);
     return {
       stacks: metadata.stacks || {},
     };
@@ -29,5 +29,5 @@ export async function saveMetadata(metadata: { stacks: Record<string, StackMetad
 
   const metaDataPath = path.join(stacksPath, '.stacktainer', 'meta.yaml');
   await fs.mkdir(path.dirname(metaDataPath), { recursive: true });
-  await fs.writeFile(metaDataPath, stringify(metadata), 'utf8');
-} 
+  await fs.writeFile(metaDataPath, YAML.stringify(metadata), 'utf8');
+}

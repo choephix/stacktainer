@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import * as path from 'path';
-import { parse } from 'yaml';
+import * as YAML from 'yaml';
 import type { ComposeFile } from '@/types/stacks';
 
 export async function isComposeFile(data: unknown): Promise<boolean> {
@@ -27,7 +27,7 @@ export async function readComposeFile(fileName: string) {
   const filePath = path.join(stacksPath, fileName);
   try {
     const content = await fs.readFile(filePath, 'utf8');
-    const parsed = parse(content);
+    const parsed = YAML.parse(content);
     const isCompose = await isComposeFile(parsed);
     return {
       content: parsed,
@@ -37,4 +37,21 @@ export async function readComposeFile(fileName: string) {
   } catch (error) {
     return null;
   }
-} 
+}
+
+export async function saveComposeFile(fileName: string, content: ComposeFile) {
+  const stacksPath = process.env.STACKS_PATH;
+  if (!stacksPath) {
+    throw new Error('STACKS_PATH not configured');
+  }
+
+  const filePath = path.join(stacksPath, fileName);
+  const yamlContent = YAML.stringify(content);
+
+  try {
+    await fs.writeFile(filePath, yamlContent, 'utf8');
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
